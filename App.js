@@ -3,7 +3,7 @@ import { AppLoading } from 'expo';
 import { Container, Text } from 'native-base';
 import * as Font from 'expo-font';
 import { Ionicons } from '@expo/vector-icons';
-import { Provider } from 'react-redux';
+import { useSelector, Provider } from 'react-redux';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
@@ -24,6 +24,7 @@ import {
 } from 'react-native-dotenv';
 import { createAppContainer } from 'react-navigation';
 import RootStack from 'app/src/routes.js';
+import { isLoaded } from 'react-redux-firebase';
 
 const fbConfig = {
   apiKey: 'AIzaSyBurBbnVbgy0h-w-j77IXbvBFpR5I9D9O4',
@@ -51,6 +52,11 @@ const rrfProps = {
 };
 
 const AppContainer = createAppContainer(RootStack);
+function AuthIsLoaded({ children }) {
+  const auth = useSelector(state => state.firebase.auth);
+  if (!isLoaded(auth)) return <Text>splash screen...</Text>;
+  return children;
+}
 
 export default class App extends React.Component {
   constructor(props) {
@@ -77,7 +83,9 @@ export default class App extends React.Component {
     return (
       <Provider store={store}>
         <ReactReduxFirebaseProvider {...rrfProps}>
-          <AppContainer />
+          <AuthIsLoaded>
+            <AppContainer />
+          </AuthIsLoaded>
         </ReactReduxFirebaseProvider>
       </Provider>
     );
