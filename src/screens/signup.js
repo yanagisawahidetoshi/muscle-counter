@@ -25,18 +25,21 @@ export default props => {
         .catch(error => {
           console.error(error);
         });
+      await props.navigation.navigate('UserInput');
     }
   }
 
   return (
     <Container>
-      <Button
-        onPress={() => {
-          loginWithFacebook();
-        }}
-      >
-        <Text>FaceBook</Text>
-      </Button>
+      <Content>
+        <Button
+          onPress={() => {
+            loginWithFacebook();
+          }}
+        >
+          <Text>FaceBook</Text>
+        </Button>
+      </Content>
     </Container>
   );
 };
