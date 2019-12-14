@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Container, Content, Button, Icon, Text } from 'native-base';
 import * as Facebook from 'expo-facebook';
 import firebase from 'firebase/app';
+import 'firebase/firestore';
 import { FACEBOOK_APPID } from 'react-native-dotenv';
 
 export default props => {
@@ -18,7 +19,7 @@ export default props => {
     });
     if (type === 'success') {
       const credential = firebase.auth.FacebookAuthProvider.credential(token);
-      firebase
+      await firebase
         .auth()
         .signInWithCredential(credential)
         .catch(error => {
